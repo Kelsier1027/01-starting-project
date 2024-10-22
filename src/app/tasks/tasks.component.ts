@@ -39,4 +39,8 @@ export class TasksComponent {
   get selectedUserTasks() {
     return this.dummyTasks.filter((task) => task.userId === this.userId);
   }
+
+  onCompelteTask(taskId: string) {
+    this.dummyTasks = this.dummyTasks.filter((task) => task.id !== taskId);
+  }
 }
