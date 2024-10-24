@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { TaskComponent } from './task/task.component';
 import { NewTaskComponent } from './new-task/new-task.component';
+import { type NewTaskData } from './task/task.model';
 
 @Component({
   selector: 'app-tasks',
@@ -42,15 +43,30 @@ export class TasksComponent {
     return this.dummyTasks.filter((task) => task.userId === this.userId);
   }
 
-  onCompelteTask(taskId: string) {
+  onCompleteTask(taskId: string) {
     this.dummyTasks = this.dummyTasks.filter((task) => task.id !== taskId);
   }
 
-  onAddTask() {
+  onStartAddTask() {
     this.isAddingTask = true;
   }
 
   onCancelAddTask(): void {
+    this.isAddingTask = false;
+  }
+
+  onAddTask(taskData: NewTaskData) {
+    this.dummyTasks.unshift({
+      // dummyTasks id 格式為 t 加上數字，判斷當前最大值，將數字部分加 1
+      id: `t${
+        Math.max(...this.dummyTasks.map((task) => +task.id.slice(1))) + 1
+      }`,
+      userId: this.userId,
+      title: taskData.title,
+      summary: taskData.summary,
+      dueDate: taskData.dueDate,
+    });
+    console.log(this.dummyTasks[this.dummyTasks.length - 1]);
     this.isAddingTask = false;
   }
 }
